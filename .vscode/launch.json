@@ -8,7 +8,8 @@
             "mainClass": "kr.lililli.ecommerce.DiscoveryServiceApplication",
             "projectName": "discovery-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
         },
         {
             "type": "java",
@@ -17,6 +18,16 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "kr.lililli.user_service.UserServiceApplication",
             "projectName": "user-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GatewayServiceApplication<gateway-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "kr.lililli.gateway_service.GatewayServiceApplication",
+            "projectName": "gateway-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
