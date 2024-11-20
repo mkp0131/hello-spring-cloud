@@ -190,3 +190,36 @@ eureka:
 - 단순한 구조 유지
 - 불필요한 서비스 등록 방지
 - 외부 요청 처리에만 집중
+
+
+## [spring] spring cloud 스프링 클라우드 actuator 적용
+
+스프링 클라우드의 클라이언트들에는 actuator 가 기본적으로 포함되어있지 않다. 설치를 따로 해주자!
+
+- 의존성 추가
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+  <version>3.3.5</version>
+</dependency>
+```
+
+- `application.yml` 파일에 설정 추가
+
+```yaml
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    health-check-url-path: /actuator/health # Actuator의 health 정보를 유레카에 전달
+    status-page-url-path: /actuator/info # Actuator의 info 정보를 유레카에 전달
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    healthcheck:
+      enabled: true    # Actuator의 health 정보를 유레카에 전달
+```
