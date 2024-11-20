@@ -3,7 +3,7 @@ spring:
     name: user-service
 
 server:
-  port: 0 # 랜덤 포트 설정
+  port: 22222 # 랜덤 포트 설정
 
 eureka:
   instance:
