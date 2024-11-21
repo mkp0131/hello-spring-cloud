@@ -1,38 +1,74 @@
 package kr.lililli.user_service.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import kr.lililli.user_service.dto.UserDto;
+import kr.lililli.user_service.exception.UserNotFoundException;
 import kr.lililli.user_service.jpa.UserEntity;
 import kr.lililli.user_service.jpa.UserRepository;
+import kr.lililli.user_service.vo.ResponseOrder;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper,
+            BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
-        ModelMapper modelMapper = new ModelMapper();
-        // STRICT 매칭 전략 설정
-        // - 소스와 대상의 필드명이 정확히 일치해야 매핑됨
-        // - 더 엄격한 타입 검사를 수행
-        // - 모호한 매핑을 허용하지 않음
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        String encryptedPwd = passwordEncoder.encode(userDto.getPwd());
+        userDto.setEncryptedPwd(encryptedPwd);
+
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
-        // TODO: 비밀번호 암호화
-        userEntity.setEncryptedPwd("encrypted_password");
+        UserEntity savedEntity = userRepository.save(userEntity);
+        UserDto returnUserDto = modelMapper.map(savedEntity, UserDto.class);
 
-        userRepository.save(userEntity);
-
-        return null;
+        return returnUserDto;
     }
+
+    @Override
+    public List<UserDto> getUserByAll() {
+        // TODO Auto-generated method stub
+        Iterable<UserEntity> userEntities = userRepository.findAll();
+        List<UserDto> returnUserDtoList = new ArrayList<>();
+
+        userEntities.forEach(v -> {
+            returnUserDtoList.add(modelMapper.map(v, UserDto.class));
+        });
+
+        return returnUserDtoList;
+    }
+
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if (userEntity == null) {
+            throw new UserNotFoundException("유저가 없습니다.");
+        }
+
+        UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+
+        List<ResponseOrder> orders = new ArrayList<>();
+        userDto.setOrders(orders);
+
+        return userDto;
+    }
+
+
 
 }

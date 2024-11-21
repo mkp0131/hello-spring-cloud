@@ -223,3 +223,4 @@ eureka:
     healthcheck:
       enabled: true    # Actuator의 health 정보를 유레카에 전달
 ```
+
