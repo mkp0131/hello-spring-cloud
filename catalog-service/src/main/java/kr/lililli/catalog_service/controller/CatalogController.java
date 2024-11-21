@@ -44,7 +44,7 @@ public class CatalogController {
             responseCatalogList.add(modelMapper.map(v, ResponseCatalog.class));
         });
 
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(catalogDtoList));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(responseCatalogList));
     }
 
 
