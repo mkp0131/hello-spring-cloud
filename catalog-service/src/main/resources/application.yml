@@ -1,9 +1,9 @@
 spring:
   application:
-    name: user-service
+    name: catalog-service
 
 server:
-  port: 22222 # 랜덤 포트 설정
+  port: 33333 # 랜덤 포트 설정
 
 --- # Eureka 설정
 eureka:

@@ -30,6 +30,16 @@
             "projectName": "gateway-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CatalogServiceApplication<catalog-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "kr.lililli.catalog_service.CatalogServiceApplication",
+            "projectName": "catalog-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
