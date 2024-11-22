@@ -29,8 +29,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<?> handleUserNotFoundException(Exception ex, WebRequest request) {
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<?> handleNotFoundException(Exception ex, WebRequest request) {
         log.error("@@@@@@@@@@@@handleUserNotFoundException", ex);
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
