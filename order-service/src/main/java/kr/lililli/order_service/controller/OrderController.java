@@ -15,6 +15,7 @@ import kr.lililli.order_service.dto.OrderDto;
 import kr.lililli.order_service.jpa.OrderEntity;
 import kr.lililli.order_service.service.OrderService;
 import kr.lililli.order_service.vo.ApiResponse;
+import kr.lililli.order_service.vo.RequestOrder;
 import kr.lililli.order_service.vo.ResponseOrder;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,8 +50,11 @@ public class OrderController {
 
     @PostMapping("/{userId}/orders")
     public ResponseEntity<?> createOrder(@PathVariable String userId,
-            @RequestBody OrderDto orderDetails) {
-        OrderDto createdOrder = orderService.createOrder(orderDetails);
+            @RequestBody RequestOrder orderDetails) {
+        OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
+        orderDto.setUserId(userId);
+        // TODO: 사용자 검증 로직 추가
+        OrderDto createdOrder = orderService.createOrder(orderDto);
         ResponseOrder responseOrder = modelMapper.map(createdOrder, ResponseOrder.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(responseOrder));
     }
