@@ -28,3 +28,14 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka
 
 
+--- # Actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    gateway:    # Gateway 전용 actuator 설정 추가
+      enabled: true
